@@ -15,6 +15,7 @@
         "nelmio/api-doc-bundle": "*",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.24",
+        "symfony/asset": "6.3.*",
         "symfony/console": "6.3.*",
         "symfony/dotenv": "6.3.*",
         "symfony/flex": "^2",
@@ -23,9 +24,12 @@
         "symfony/property-info": "6.3.*",
         "symfony/runtime": "6.3.*",
         "symfony/serializer": "6.3.*",
+        "symfony/twig-bundle": "6.3.*",
         "symfony/uid": "6.3.*",
         "symfony/validator": "6.3.*",
-        "symfony/yaml": "6.3.*"
+        "symfony/yaml": "6.3.*",
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "allow-plugins": {
@@ -76,6 +80,10 @@
         }
     },
     "require-dev": {
-        "symfony/maker-bundle": "^1.51"
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "phpstan/phpstan": "^1.10",
+        "squizlabs/php_codesniffer": "^3.7",
+        "symfony/maker-bundle": "^1.51",
+        "zenstruck/foundry": "^1.35"
     }
 }
