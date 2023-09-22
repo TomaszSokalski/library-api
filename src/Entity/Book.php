@@ -25,9 +25,9 @@ class Book
     #[ORM\Column(length: 255)]
     private ?string $author = null;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
-    private ?\DateTimeImmutable $publicationDate = null;
+    private ?\DateTimeInterface $publicationDate = null;
 
     #[ORM\Column(length: 20)]
     private ?string $status = null;
@@ -61,12 +61,12 @@ class Book
         return $this;
     }
 
-    public function getPublicationDate(): ?\DateTimeImmutable
+    public function getPublicationDate(): ?\DateTimeInterface
     {
         return $this->publicationDate;
     }
 
-    public function setPublicationDate(\DateTimeImmutable $publicationDate): static
+    public function setPublicationDate(\DateTimeInterface $publicationDate): static
     {
         $this->publicationDate = $publicationDate;
 
