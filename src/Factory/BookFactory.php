@@ -49,7 +49,7 @@ final class BookFactory extends ModelFactory
         return [
             'title' => rtrim(self::faker()->text(10), '.'),
             'author' => rtrim(self::faker()->text(20), '.'),
-            'publicationDate' => self::faker()->datetime(),
+            'publicationDate' => self::faker()->dateTime(),
             'status' => 'available',
         ];
     }
@@ -61,7 +61,7 @@ final class BookFactory extends ModelFactory
     {
         return $this
             // ->afterInstantiate(function(Book $book): void {})
-        ;
+            ;
     }
 
     protected static function getClass(): string
