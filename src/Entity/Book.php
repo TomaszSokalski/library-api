@@ -10,10 +10,16 @@ use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
+use OpenApi\Attributes as OA;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 class Book
 {
+    private const STATUS = ['available', 'unavailable'];
+
+    #[Assert\Uuid]
+    #[OA\Property(type: 'uuid', example: '8a47fd24-34d3-4ed0-b69c-4d151bf277c6')]
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -21,20 +27,35 @@ class Book
     #[Groups(['main'])]
     private ?Uuid $id = null;
 
+    #[Assert\NotNull]
+    #[Assert\NotBlank(message: 'Book title is required')]
+    #[Assert\Type('string')]
+    #[OA\Property(minLength: 1, example: 'Latarnik')]
     #[ORM\Column(length: 255)]
     #[Groups(['main'])]
     private ?string $title = null;
 
+    #[Assert\NotNull]
+    #[Assert\NotBlank(message: 'Book author is required')]
+    #[Assert\Type('string')]
+    #[OA\Property(minLength: 1, example: 'Henryk Sienkiewicz')]
     #[ORM\Column(length: 255)]
     #[Groups(['main'])]
     private ?string $author = null;
 
+    #[Assert\NotNull]
+    #[Assert\Type('\DateTimeInterface')]
+    #[OA\Property(type: 'date', example: '2009-12-25')]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     #[Groups(['main'])]
     private ?\DateTimeInterface $publicationDate = null;
 
-    #[ORM\Column(length: 20)]
+    #[Assert\NotNull]
+    #[Assert\NotBlank(message: 'Book status is required')]
+    #[Assert\Type('string')]
+    #[Assert\Choice(choices: self::STATUS, message: 'Choose a valid status.')]
+    #[ORM\Column(length: 255)]
     #[Groups(['main'])]
     private ?string $status = null;
 

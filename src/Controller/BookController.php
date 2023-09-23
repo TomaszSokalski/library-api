@@ -23,8 +23,6 @@ class BookController extends AbstractFOSRestController
     {
     }
 
-    private const STATUS = ['available'];
-
     /**
      * Return a list of all books
      */
@@ -97,8 +95,7 @@ class BookController extends AbstractFOSRestController
                     new OA\Property(
                         property: 'status',
                         type: 'string',
-                        enum: self::STATUS,
-                        example: self::STATUS
+                        example: ['available']
                     ),
                 ],
                 example: [
@@ -154,7 +151,7 @@ class BookController extends AbstractFOSRestController
                     new OA\Property(
                         property: 'status',
                         type: 'string',
-                        example: 'available'
+                        example: ['available', 'unavailable']
                     ),
                 ],
                 example: [

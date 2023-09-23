@@ -5,14 +5,18 @@ namespace App\Service;
 use App\Entity\Book;
 use App\Repository\BookRepository;
 use Exception;
+use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BookService
 {
-    public function __construct(private readonly BookRepository $bookRepository)
-    {
+    public function __construct(
+        private readonly BookRepository $bookRepository,
+        private readonly ValidatorInterface $validator,
+    ) {
     }
 
     public function find(Uuid $id): Book
@@ -85,6 +89,11 @@ class BookService
             ->setAuthor($data['author'])
             ->setPublicationDate(new \DateTimeImmutable($data['publicationDate']))
             ->setStatus($data['status']);
+
+        $errors = $this->validator->validate($book);
+        if (count($errors) > 0) {
+            throw new InvalidArgumentException((string)$errors);
+        }
 
         $this->bookRepository->add($book, true);
     }
