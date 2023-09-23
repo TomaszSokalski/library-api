@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Uid\Uuid;
 
@@ -17,19 +18,24 @@ class Book
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[Groups(['main'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['main'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['main'])]
     private ?string $author = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
+    #[Groups(['main'])]
     private ?\DateTimeInterface $publicationDate = null;
 
     #[ORM\Column(length: 20)]
+    #[Groups(['main'])]
     private ?string $status = null;
 
     public function getId(): ?Uuid
