@@ -7,27 +7,38 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
+use OpenApi\Attributes as OA;
 
 #[ORM\Entity(repositoryClass: ReaderRepository::class)]
 class Reader
 {
+    #[OA\Property(type: 'uuid', example: '8a47fd24-34d3-4ed0-b69c-4d151bf277c6')]
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[Groups(['main'])]
     private ?Uuid $id = null;
 
+    #[OA\Property(minLength: 1, example: 'John')]
     #[ORM\Column(length: 255)]
+    #[Groups(['main'])]
     private ?string $firstName = null;
 
+    #[OA\Property(minLength: 1, example: 'Doe')]
     #[ORM\Column(length: 255)]
+    #[Groups(['main'])]
     private ?string $lastName = null;
 
+    #[OA\Property(example: 'john@doe.com')]
     #[ORM\Column(length: 255)]
+    #[Groups(['main'])]
     private ?string $email = null;
 
     #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: 'readers')]
+    #[Groups(['main'])]
     private Collection $borrowedBooks;
 
     public function __construct()

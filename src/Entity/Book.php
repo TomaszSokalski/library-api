@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -61,6 +62,7 @@ class Book
     #[Groups(['main'])]
     private ?string $status = null;
 
+    #[Ignore]
     #[ORM\ManyToMany(targetEntity: Reader::class, mappedBy: 'borrowedBooks')]
     private Collection $readers;
 
