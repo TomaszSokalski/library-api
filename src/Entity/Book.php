@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BookRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -59,6 +61,14 @@ class Book
     #[Groups(['main'])]
     private ?string $status = null;
 
+    #[ORM\ManyToMany(targetEntity: Reader::class, mappedBy: 'borrowedBooks')]
+    private Collection $readers;
+
+    public function __construct()
+    {
+        $this->readers = new ArrayCollection();
+    }
+
     public function getId(): ?Uuid
     {
         return $this->id;
@@ -108,6 +118,33 @@ class Book
     public function setStatus(string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reader>
+     */
+    public function getReaders(): Collection
+    {
+        return $this->readers;
+    }
+
+    public function addReader(Reader $reader): static
+    {
+        if (!$this->readers->contains($reader)) {
+            $this->readers->add($reader);
+            $reader->addBorrowedBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReader(Reader $reader): static
+    {
+        if ($this->readers->removeElement($reader)) {
+            $reader->removeBorrowedBook($this);
+        }
 
         return $this;
     }
