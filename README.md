@@ -5,7 +5,7 @@
   - Reader: first name, last name, email address, list of borrowed books
 - **Functions**:   
   - Adding/Editing/Deleting/Browsing books  
-  - Searching for books by title, author, publication year  
+  - Searching for books by title, author, publication year  >>>> **WIP**
   - Adding/Editing/Deleting/Browsing readers  
   - Borrowing a book by a reader (this should automatically change the book's status to 'unavailable')  
   - Returning a book by a reader (this should automatically change the book's status to 'available')  
@@ -16,11 +16,11 @@
 - **Transactionality**:  
   - Borrowing and returning book operations should be conducted as transactions.  
 - **Testing**:  
-  - Prepare unit and functional tests to verify the correctness of the above functions.
+  - Prepare unit and functional tests to verify the correctness of the above functions. >>>> **WIP**
 
     
 **Extra features**:  
 - Using Docker to manage the application environment.
 - Applying database migrations.
-- Implementing authentication and authorization using JWT (JSON Web Tokens).
+- Implementing authentication and authorization using JWT (JSON Web Tokens). >>>> **WIP**
 - Utilizing UUIDs instead of traditional IDs.
