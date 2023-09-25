@@ -206,8 +206,8 @@ class ReaderController extends AbstractFOSRestController
         )
     )]
     #[OA\Response(
-        response: Response::HTTP_CREATED,
-        description: 'Return the Reader ID',
+        response: Response::HTTP_NO_CONTENT,
+        description: 'Book added to Reader',
     )]
     #[OA\Response(
         response: Response::HTTP_BAD_REQUEST,
