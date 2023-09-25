@@ -113,6 +113,34 @@ class ReaderService
     }
 
     /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function returnBook(string $bookId, Uuid $id): void
+    {
+        $book = $this->bookRepository->find($bookId);
+        $reader = $this->readerRepository->find($id);
+
+        try {
+            $this->entityManager->getConnection()->beginTransaction();
+
+            if (!$reader->getBorrowedBooks()->contains($book)) {
+                throw new Exception('Reader cannot return a book that has not been borrowed.');
+            }
+
+            $book->setStatus('available');
+            $reader->removeBorrowedBook($book);
+
+            $this->entityManager->persist($book);
+            $this->entityManager->flush();
+
+            $this->entityManager->getConnection()->commit();
+        } catch (Exception $e) {
+            $this->entityManager->getConnection()->rollBack();
+            throw $e;
+        }
+    }
+
+    /**
      * @param Reader $reader
      * @param array<string> $data
      * @return void

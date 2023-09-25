@@ -219,4 +219,37 @@ class ReaderController extends AbstractFOSRestController
 
         return View::create();
     }
+
+    /**
+     * Return Book to library
+     * @throws \Doctrine\DBAL\Exception
+     */
+    #[Rest\Put(path: '/readers/return/{id}', name: 'api_v1_return_book')]
+    #[OA\Put(description: "Return book")]
+    #[OA\RequestBody(
+        description: "Json to return a book",
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(
+                    property: "returnBook",
+                    type: "string",
+                    example: "ID of the book you want to return"
+                ),
+            ]
+        )
+    )]
+    #[OA\Response(
+        response: Response::HTTP_NO_CONTENT,
+        description: 'Reader return a book',
+    )]
+    #[OA\Response(
+        response: Response::HTTP_BAD_REQUEST,
+        description: 'Invalid arguments',
+    )]
+    public function returnBook(Request $request, Uuid $id): View
+    {
+        $this->readerService->returnBook($request->request->get('returnBook'), $id);
+
+        return View::create();
+    }
 }
