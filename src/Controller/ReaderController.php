@@ -186,4 +186,37 @@ class ReaderController extends AbstractFOSRestController
 
         return View::create();
     }
+
+    /**
+     * Add borrowed book to reader
+     * @throws \Doctrine\DBAL\Exception
+     */
+    #[Rest\Put(path: '/readers/borrow/{id}', name: 'api_v1_borrow_book')]
+    #[OA\Put(description: "Borrow book")]
+    #[OA\RequestBody(
+        description: "Json to borrow a book",
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(
+                    property: "borrowBook",
+                    type: "string",
+                    example: "ID of the book you want to borrow"
+                ),
+            ]
+        )
+    )]
+    #[OA\Response(
+        response: Response::HTTP_CREATED,
+        description: 'Return the Reader ID',
+    )]
+    #[OA\Response(
+        response: Response::HTTP_BAD_REQUEST,
+        description: 'Invalid arguments',
+    )]
+    public function borrowBook(Request $request, Uuid $id): View
+    {
+        $this->readerService->borrowBook($request->request->get('borrowBook'), $id);
+
+        return View::create();
+    }
 }

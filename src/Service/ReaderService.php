@@ -3,7 +3,9 @@
 namespace App\Service;
 
 use App\Entity\Reader;
+use App\Repository\BookRepository;
 use App\Repository\ReaderRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -14,7 +16,9 @@ class ReaderService
 {
     public function __construct(
         private readonly ReaderRepository $readerRepository,
-        private readonly ValidatorInterface $validator
+        private readonly BookRepository $bookRepository,
+        private readonly ValidatorInterface $validator,
+        private readonly EntityManagerInterface $entityManager
     ) {
     }
 
@@ -74,6 +78,38 @@ class ReaderService
         $reader = $this->find($id);
 
         $this->readerRepository->remove($reader, true);
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function borrowBook(string $bookId, Uuid $id): void
+    {
+        $book = $this->bookRepository->find($bookId);
+        $reader = $this->readerRepository->find($id);
+
+        try {
+            $this->entityManager->getConnection()->beginTransaction();
+
+            if (count($reader->getBorrowedBooks()) >= 3) {
+                throw new Exception('Reader has too many borrowed books');
+            }
+
+            if ($book->getStatus() === 'unavailable') {
+                throw new Exception('Book status is unavailable');
+            }
+
+            $book->setStatus('unavailable');
+            $reader->addBorrowedBook($book);
+
+            $this->entityManager->persist($book);
+            $this->entityManager->flush();
+
+            $this->entityManager->getConnection()->commit();
+        } catch (Exception $e) {
+            $this->entityManager->getConnection()->rollBack();
+            throw $e;
+        }
     }
 
     /**
