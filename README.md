@@ -22,5 +22,5 @@
 **Extra features**:  
 - Using Docker to manage the application environment.
 - Applying database migrations.
-- Implementing authentication and authorization using JWT (JSON Web Tokens). >>>> **WIP**
+- Implementing authentication and authorization using JWT (JSON Web Tokens).
 - Utilizing UUIDs instead of traditional IDs.
