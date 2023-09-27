@@ -49,7 +49,7 @@ class Book
     #[Assert\NotNull]
     #[Assert\Type('\DateTimeInterface')]
     #[OA\Property(type: 'date', example: '2009-12-25')]
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     #[Groups(['main'])]
     private ?\DateTimeInterface $publicationDate = null;
